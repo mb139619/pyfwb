@@ -15,9 +15,9 @@ class Bond(FrankfurtBoerse):
         self.isin = isin
         self.url = f"https://www.boerse-frankfurt.de/bond/{self.isin}"
 
-#TODO Completare lo scraper aggungendo la scelta delle date e il price adjustement
     def history(self, 
                 period: str,
+                adjust_prices: bool = True,
                 ):
         
         start_date = utils.period_to_date(period)
@@ -33,14 +33,18 @@ class Bond(FrankfurtBoerse):
             )
             price_history.click()
 
-            adjust_price_button = WebDriverWait(self.webdriver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, "/html/body/app-root/app-wrapper/div/div/div[2]/app-bond/div[2]/div/app-price-history/div[1]/div[2]/div[2]/div[2]/div/label[1]/input"))
-            )
-
-            adjust_price_button.click()
+            if adjust_prices:
+                checkboxes = WebDriverWait(self.webdriver, 10).until(
+                            EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[type='checkbox']"))
+                            )
+                for checkbox in checkboxes:
+                    try:
+                        WebDriverWait(self.webdriver, 7).until(EC.element_to_be_clickable(checkbox)).click()  
+                    except:
+                        pass
 
             start_date_box = WebDriverWait(self.webdriver, 10).until(
-                EC.presence_of_element_located((By.XPATH, "//app-datepicker/div/input"))
+                EC.presence_of_element_located((By.XPATH, '/html/body/app-root/app-wrapper/div/div/div[2]/app-bond/div[2]/div/app-price-history/div[1]/div[1]/div/div/div[1]/app-datepicker/div/input'))
             )
             utils.clear_input_data_form(start_date_box)
             

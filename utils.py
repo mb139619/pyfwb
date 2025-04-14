@@ -79,8 +79,4 @@ def read_table(driver, last_page):
     return data
 
 
-if __name__ == "__main__":
-
-    print(period_to_date("1 mo"))
-
             
