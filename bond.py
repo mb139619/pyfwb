@@ -17,7 +17,7 @@ class Bond(FrankfurtBoerse):
 
     def history(self, 
                 period: str,
-                adjust_prices: bool = True,
+                adjust_prices: bool = False,
                 ):
         
         start_date = utils.period_to_date(period)
@@ -55,6 +55,8 @@ class Bond(FrankfurtBoerse):
                 EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'Search')]"))
             )
             search_new_dates.click()
+            time.sleep(4)
+            self.webdriver.execute_script("window.scrollBy(0, 500);")
 
 
             last_page = int(WebDriverWait(self.webdriver, 10).until(
@@ -72,7 +74,7 @@ class Bond(FrankfurtBoerse):
 
 if __name__ == "__main__":
 
-    isin = Bond('DE0001102390')
-    data = isin.history("1mo")
+    isin = Bond('AT0000A33SH3')
+    data = isin.history("max")
 
     print(data)

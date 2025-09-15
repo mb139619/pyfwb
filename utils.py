@@ -30,6 +30,7 @@ def period_to_date(period:str) -> str:
         "1y": now - relativedelta(years=1),
         "2y": now - relativedelta(years=2),
         "5y": now - relativedelta(years=5),
+        "6y": now - relativedelta(years=6),
         "10y": now - relativedelta(years=10),
         "ytd": datetime(now.year, 1, 1),
         "max" : datetime(1900, 1, 1)
